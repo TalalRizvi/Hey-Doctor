@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Disease Predictor</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #4a90e2;
+    }
+
+    .form-group label {
+      font-weight: bold;
+      color: #555;
+    }
+
+    #symptoms {
+      border-color: #ddd;
+    }
+
+    .btn-primary {
+      background-color: #4a90e2;
+      border-color: #4a90e2;
+    }
+
+    .btn-primary:hover {
+      background-color: #3f81d9;
+      border-color: #3f81d9;
+    }
+
+    #result-container {
+      margin-top: 20px;
+    }
+
+    #result-container h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #555;
+    }
+
+    #result-container p {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Disease Predictor</h1>
+
+    <form id="symptoms-form">
+      <div class="form-group">
+        <label for="symptoms">Enter your symptoms:</label>
+        <input type="text" class="form-control" id="symptoms" name="symptoms" placeholder="Enter symptoms" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Predict</button>
+    </form>
+
+    <div id="result-container"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById("symptoms-form");
+    const resultContainer = document.getElementById("result-container");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const symptomsInput = document.getElementById("symptoms");
+      const symptoms = symptomsInput.value.trim();
+
+      // Make an API call to the backend Python code using fetch or XMLHttpRequest
+      fetch("/predict-disease", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ symptoms })
+      })
+        .then(response => response.json())
+        .then(data => {
+          // Display the predicted disease
+          displayResult(data);
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
+    });
+
+    function displayResult(data) {
+      // Clear previous result
+      resultContainer.innerHTML = "";
+
+      if (data && data.disease) {
+        const heading = document.createElement("h2");
+        heading.textContent = "Predicted Disease:";
+        resultContainer.appendChild(heading);
+
+        const disease = document.createElement("p");
+        disease.textContent = data.disease;
+        resultContainer.appendChild(disease);
+      } else {
+        const message = document.createElement("p");
+        message.textContent = "No disease found.";
+        resultContainer.appendChild(message);
+      }
+    }
+  </script>
+</body>
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+  <title>Disease Predictor</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .form-group label {
+      font-weight: bold;
+    }
+
+    #result-container {
+      margin-top: 20px;
+    }
+
+    #result-container h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    #result-container p {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Disease Predictor</h1>
+
+    <form id="symptoms-form">
+      <div class="form-group">
+        <label for="symptoms">Enter your symptoms:</label>
+        <input type="text" class="form-control" id="symptoms" name="symptoms" placeholder="Enter symptoms" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Predict</button>
+    </form>
+
+    <div id="result-container"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById("symptoms-form");
+    const resultContainer = document.getElementById("result-container");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const symptomsInput = document.getElementById("symptoms");
+      const symptoms = symptomsInput.value.trim();
+
+      // Make an API call to the backend Python code using fetch or XMLHttpRequest
+      fetch("/predict-disease", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ symptoms })
+      })
+        .then(response => response.json())
+        .then(data => {
+          // Display the predicted disease
+          displayResult(data);
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
+    });
+
+    function displayResult(data) {
+      // Clear previous result
+      resultContainer.innerHTML = "";
+
+      if (data && data.disease) {
+        const heading = document.createElement("h2");
+        heading.textContent = "Predicted Disease:";
+        resultContainer.appendChild(heading);
+
+        const disease = document.createElement("p");
+        disease.textContent = data.disease;
+        resultContainer.appendChild(disease);
+      } else {
+        const message = document.createElement("p");
+        message.textContent = "No disease found.";
+        resultContainer.appendChild(message);
+      }
+    }
+  </script>
+</body>
+</html> -->
